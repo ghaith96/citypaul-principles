@@ -16,8 +16,6 @@ Everything here is derived from citypaul's `.claude/` configuration:
 - **Skills** — deep-dive patterns for TDD, testing, TypeScript, functional programming, hexagonal architecture, DDD, 12-factor, refactoring, planning, and more
 - **Agents** — specialised review and analysis tools
 
-The original guidelines live at `claude/.claude/` in this repo.
-
 ## Course Structure
 
 All chapters are in `human_course/`. Start with the syllabus:
@@ -44,16 +42,6 @@ Every chapter follows the same structure:
 1. **Philosophy First** — the mental model and *why* behind the practice
 2. **Bad Code / Good Code** — TypeScript contrast examples you can learn from
 3. **Checklist** — quick reference for when you're in the flow
-
-## Key Principles at a Glance
-
-- **TDD is non-negotiable** — every line of production code is written in response to a failing test
-- **Test behavior, not implementation** — tests survive refactoring when they test through the public API
-- **No `any`** — ever. Use `unknown` when the type is truly unknown
-- **Immutable data only** — never mutate, always create new versions
-- **Schema-first at trust boundaries** — validate with Zod at every system boundary
-- **Domain logic at the centre** — hexagonal architecture keeps business rules free of infrastructure concerns
-- **Config from environment** — never hardcode anything that varies between deploys
 
 ## Credits
 
