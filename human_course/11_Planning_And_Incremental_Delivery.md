@@ -193,26 +193,35 @@ A team that consistently ships small PRs moves faster than a team that ships lar
 
 Here is how all of this fits together from the moment you pick up a feature to the moment it ships.
 
-```
-START FEATURE
-├── Write plan file in plans/
-├── Get plan approved
-│
-│   FOR EACH STEP IN THE PLAN:
-│   │
-│   ├── RED:      Write a failing test that describes the behavior
-│   ├── GREEN:    Write the minimum code to make it pass
-│   ├── REFACTOR: Improve the code if there is clear value
-│   ├── MUTATE:   Run mutation testing to verify test quality
-│   │
-│   ├── Verify: all tests pass
-│   ├── Verify: static analysis passes (typecheck + lint)
-│   └── STOP: Ask "Ready to commit?" — do not commit without approval
-│
-END FEATURE
-├── Verify all acceptance criteria are met
-├── Final mutation testing pass
-└── Delete plan file
+```mermaid
+flowchart TD
+    START[START FEATURE] --> PLAN["Write plan file in plans/"]
+    PLAN --> APPROVE["Get plan approved"]
+    
+    APPROVE --> LOOP{"FOR EACH STEP"}
+    
+    LOOP --> RED["🔴 RED: Write failing test"]
+    RED --> GREEN["🟢 GREEN: Write minimum code"]
+    GREEN --> REFACTOR["🔵 REFACTOR: Improve code"]
+    REFACTOR --> MUTATE["🧬 MUTATE: Run mutation testing"]
+    
+    MUTATE --> V1["✓ Verify: all tests pass"]
+    V1 --> V2["✓ Verify: static analysis passes"]
+    V2 --> STOP["⏹️ STOP: Ask 'Ready to commit?'"]
+    
+    STOP -->|"More steps"| LOOP
+    STOP -->|"Done"| ENDFEATURE["END FEATURE"]
+    
+    ENDFEATURE --> FINAL1["✓ Verify acceptance criteria"]
+    FINAL1 --> FINAL2["🧬 Final mutation testing pass"]
+    FINAL2 --> FINAL3["🗑️ Delete plan file"]
+    
+    style START fill:#e8f5e9,stroke:#2e7d32
+    style RED fill:#ffebee,stroke:#c62828
+    style GREEN fill:#e8f5e9,stroke:#2e7d32
+    style REFACTOR fill:#e3f2fd,stroke:#1565c0
+    style STOP fill:#fff3e0,stroke:#ef6c00
+    style ENDFEATURE fill:#e8f5e9,stroke:#2e7d32
 ```
 
 The key discipline is the **STOP** at the end of each step. You do not decide on your own that the work is ready to commit. You pause, present the state of the code, and get explicit approval. This is not bureaucracy — it is a checkpoint that catches mistakes before they enter the history.

@@ -24,24 +24,47 @@ This is not academic architecture. It is the most practical thing you can do to 
 
 Not all adapters are the same. There are two kinds, and the distinction is fundamental.
 
-```
-         Driving (left)                    Driven (right)
-    +--------------------+            +--------------------+
-    |  Route handlers    |            |  Repositories      |
-    |  CLI commands      |------++----|  API clients       |
-    |  Event listeners   |      ||    |  Email services    |
-    +--------------------+      ||    +--------------------+
-         call into ------>  +------+  <------ implement
-                            |      |
-                            |  DO  |
-                            |  MA  |
-                            |  IN  |
-                            |      |
-         call into ------>  +------+  <------ implement
-    +--------------------+      ||    +--------------------+
-    |  Cron triggers     |------++    |  File storage      |
-    |  Message queues    |------++----+  Payment gateway   |
-    +--------------------+            +--------------------+
+```mermaid
+flowchart LR
+    subgraph Driving["Driving Adapters (Left)"]
+        direction TB
+        RH["Route handlers"]
+        CLI["CLI commands"]
+        EV["Event listeners"]
+        CRON["Cron triggers"]
+        MQ["Message queues"]
+    end
+    
+    subgraph Domain["DOMAIN"]
+        direction TB
+        UC["Use Cases"]
+        PORTS["Ports"]
+    end
+    
+    subgraph Driven["Driven Adapters (Right)"]
+        direction TB
+        REPO["Repositories"]
+        API["API clients"]
+        EMAIL["Email services"]
+        FS["File storage"]
+        PAY["Payment gateway"]
+    end
+    
+    RH -->|"call into"| Domain
+    CLI -->|"call into"| Domain
+    EV -->|"call into"| Domain
+    CRON -->|"call into"| Domain
+    MQ -->|"call into"| Domain
+    
+    Domain -->|"implement"| REPO
+    Domain -->|"implement"| API
+    Domain -->|"implement"| EMAIL
+    Domain -->|"implement"| FS
+    Domain -->|"implement"| PAY
+    
+    style Driving fill:#e3f2fd,stroke:#1565c0
+    style Domain fill:#fff3e0,stroke:#ef6c00
+    style Driven fill:#f3e5f5,stroke:#7b1fa2
 ```
 
 **Driving adapters** (left side) initiate actions on the application. They *call* use cases. A route handler receives an HTTP request, parses it, wires up the dependencies, and calls a use case function. A CLI command does the same from a terminal. A queue consumer does the same from a message. The use case does not know or care which one triggered it.

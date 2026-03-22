@@ -128,18 +128,28 @@ The type signature tells the full story: it takes a `ReadonlyArray` (cannot be m
 
 Real applications have side effects. They read from databases, call APIs, write to disk. The strategy is not to eliminate side effects — it is to *isolate* them.
 
-```
-┌─────────────────────────────────────────┐
-│           Impure Shell                  │
-│  (HTTP handlers, DB queries, logging)   │
-│                                         │
-│   ┌─────────────────────────────────┐   │
-│   │         Pure Core               │   │
-│   │  (validation, transformation,   │   │
-│   │   business rules, calculations) │   │
-│   └─────────────────────────────────┘   │
-│                                         │
-└─────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Shell["Impure Shell"]
+        direction TB
+        HTTP["HTTP handlers"]
+        DB["DB queries"]
+        LOG["Logging"]
+        
+        subgraph Core["Pure Core"]
+            VAL["Validation"]
+            TRANS["Transformation"]
+            BIZ["Business rules"]
+            CALC["Calculations"]
+        end
+    end
+    
+    HTTP --> Core
+    DB --> Core
+    LOG --> Core
+    
+    style Shell fill:#ffebee,stroke:#c62828
+    style Core fill:#e8f5e9,stroke:#2e7d32
 ```
 
 Push all impurity to the edges of your system. The HTTP handler reads the request (impure), calls pure functions to validate and transform (pure), then writes the response (impure). The pure core — where your actual business logic lives — is trivially testable.

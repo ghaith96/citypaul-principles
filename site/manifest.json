@@ -1,0 +1,33 @@
+{
+  "name": "Citypaul Principles",
+  "short_name": "Citypaul",
+  "description": "A human-readable guide to principled TypeScript development",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#42b983",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "education",
+    "developer tools"
+  ],
+  "lang": "en"
+}

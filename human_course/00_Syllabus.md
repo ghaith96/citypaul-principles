@@ -1,4 +1,4 @@
-# The Citypaul Engineering Course
+# The Citypaul Principles
 
 ## A Human-Readable Guide to Principled TypeScript Development
 

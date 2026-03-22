@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Citypaul Principles - A guide to principled TypeScript development">
+  <meta name="theme-color" content="#42b983">
+  <title>Citypaul Principles</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+
+  <!-- Docsify Themeable - with automatic dark mode -->
+  <link rel="stylesheet" media="(prefers-color-scheme: light)"
+    href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+  <link rel="stylesheet" media="(prefers-color-scheme: dark)"
+    href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+
+  <!-- Minimal custom overrides -->
+  <link rel="stylesheet" href="theme.css">
+
+  <!-- Mermaid diagram styles -->
+  <style>
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      margin: 1.5em 0;
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">Loading...</div>
+
+  <script>
+    window.$docsify = {
+      name: 'Citypaul Principles',
+      repo: 'https://github.com/ghaith96/citypaul-principles',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      homepage: 'human_course/00_Syllabus.md',
+      notFoundPage: true,
+
+      // Theme color
+      themeColor: '#42b983',
+
+      // Search plugin (optional, disabled for now)
+      // search: 'auto',
+
+      // Mermaid diagram rendering
+      markdown: {
+        renderer: {
+          code: function (code, lang) {
+            if (lang === 'mermaid') {
+              return '<div class="mermaid">' + code + '</div>';
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
+      },
+
+      // Plugins configuration
+      plugins: [
+        function (hook, vm) {
+          // Initialize Mermaid after each page load
+          hook.doneEach(function () {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+            }
+          });
+
+          // Re-initialize Mermaid when theme changes
+          hook.mounted(function () {
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            mediaQuery.addEventListener('change', function () {
+              if (typeof mermaid !== 'undefined') {
+                const theme = mediaQuery.matches ? 'dark' : 'default';
+                mermaid.initialize({ startOnLoad: false, theme: theme });
+                mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+              }
+            });
+          });
+        }
+      ]
+    };
+  </script>
+
+  <!-- Docsify core -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+
+  <!-- Syntax highlighting for code blocks -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-markdown.min.js"></script>
+
+  <!-- Mermaid for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    // Initialize Mermaid with theme detection
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: prefersDark ? 'dark' : 'default',
+      securityLevel: 'loose'
+    });
+  </script>
+
+  <!-- Copy code button -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(function (registration) {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(function (error) {
+          console.log('Service Worker registration failed:', error);
+        });
+    }
+  </script>
+</body>
+
+</html>

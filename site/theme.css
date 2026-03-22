@@ -1,0 +1,55 @@
+:root {
+  --theme-color: #42b983;
+}
+
+/* Mermaid diagram container */
+.mermaid {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  padding: 1em 0;
+}
+
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Table improvements */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+
+th, td {
+  padding: 0.75em 1em;
+  text-align: left;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+  .content {
+    padding: 1em;
+  }
+  
+  table {
+    font-size: 0.9em;
+  }
+  
+  th, td {
+    padding: 0.5em;
+  }
+}
+
+/* Print styles */
+@media print {
+  .sidebar, .github-corner {
+    display: none;
+  }
+  
+  .content {
+    max-width: 100%;
+    padding: 0;
+  }
+}
